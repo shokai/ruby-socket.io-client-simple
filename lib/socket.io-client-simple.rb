@@ -11,8 +11,8 @@ module SocketIO
   module Client
     module Simple
 
-      def self.connect(url)
-        Client.new(url)
+      def self.connect(url, opts={})
+        Client.new(url, opts)
       end
 
     end
