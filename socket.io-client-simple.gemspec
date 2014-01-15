@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["hashimoto@shokai.org"]
   spec.description   = "A simple ruby client for node.js's socket.io. Supports only WebSocket."
   spec.summary       = spec.description
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/shokai/ruby-socket.io-client-simple"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
