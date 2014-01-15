@@ -28,13 +28,14 @@ client.on :disconnect do
 end
 
 client.on :chat do |data|
-  puts ">" + data['msg']
+  puts "> " + data['msg']
 end
 
+puts "please input and press Enter key"
 loop do
-  msg = "hello!!"
+  msg = STDIN.gets.strip
+  next if msg.empty?
   client.emit :chat, {:msg => msg, :at => Time.now}
-  sleep 1
 end
 ```
 
