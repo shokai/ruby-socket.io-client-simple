@@ -1,0 +1,4 @@
+=== 0.0.1 2014-1-15
+
+* first release
+* implemented "emit" and "on"
