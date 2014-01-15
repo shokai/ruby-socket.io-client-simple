@@ -19,20 +19,21 @@ module SocketIO
           this = self
           @websocket.on :message do |msg|
             code, body = msg.data.scan(/^(\d+):{2,3}(.*)$/)[0]
+            code = code.to_i
             case code
-            when '0'
+            when 0
               this.__emit :disconnect
-            when '1'
+            when 1
               this.__emit :connect
-            when '2'
+            when 2
               send "2::"  # heartbeat
-            when '3'
-            when '4'
-            when '5'
+            when 3
+            when 4
+            when 5
               data = JSON.parse body
               this.__emit data['name'], *data['args']
-            when '6'
-            when '7'
+            when 6
+            when 7
               this.__emit :error
             end
           end
@@ -41,8 +42,7 @@ module SocketIO
             this.emit :disconnect
           end
 
-          @websocket.send "1::#{opts['path']}"
-
+          @websocket.send "1::#{opts[:path]}"
         end
 
         def configure
