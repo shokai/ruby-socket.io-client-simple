@@ -11,3 +11,10 @@ io.sockets.on('connection', function(socket){
     socket.emit('chat', data); // echo
   });
 });
+
+
+if(!!process.env.EXIT_AT){
+  setTimeout(function(){
+    process.exit();
+  }, process.env.EXIT_AT-0);
+}

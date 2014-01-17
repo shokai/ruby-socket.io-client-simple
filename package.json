@@ -1,6 +1,7 @@
 {
   "name": "ruby-socket.io-client-simple",
   "description": "A simple ruby client for node.js's socket.io. Supports only WebSocket.",
+  "private": true,
   "author": "Sho Hashimoto <hashimoto@shokai.org>",
   "license": "MIT",
   "homepage": "https://github.com/shokai/ruby-socket.io-client-simple",
@@ -9,7 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node samples/chat_server.js"
   },
   "repository": {
     "type": "git",
