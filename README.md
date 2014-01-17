@@ -43,7 +43,7 @@ sample.rb works with [samples/chat_server.js](https://github.com/shokai/ruby-soc
 
 ### start chat server
 
-    % npm install socket.io
+    % npm install
     % node samples/chat_server.js
 
 => chat server start at localhost:3000
