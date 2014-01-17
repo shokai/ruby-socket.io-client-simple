@@ -12,7 +12,7 @@ class TestSocketIOClientSimple < MiniTest::Test
     socket.on :connect do
       result = true
     end
-    sleep 0.1
+    sleep 0.5
     assert result
   end
 
@@ -28,7 +28,7 @@ class TestSocketIOClientSimple < MiniTest::Test
       socket.emit :chat, post_data
     end
 
-    sleep 0.1
+    sleep 0.5
     assert_equal post_data, result
   end
 
