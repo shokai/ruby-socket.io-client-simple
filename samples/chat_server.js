@@ -1,6 +1,8 @@
 // socket.io chat server
+var port = (process.env.PORT || 3000) - 0;
 
-var io = require('socket.io').listen(3000);
+var io = require('socket.io').listen(port);
+console.log("socket.io server start - port:"+port);
 
 io.sockets.on('connection', function(socket){
   socket.emit('chat', {msg: 'hello world (from server)'});
