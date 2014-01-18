@@ -39,7 +39,7 @@ module SocketIO
           end
 
           @websocket.on :close do
-            this.emit :disconnect
+            this.__emit :disconnect
           end
 
           @websocket.send "1::#{opts[:path]}"
