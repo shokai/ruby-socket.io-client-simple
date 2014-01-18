@@ -1,3 +1,7 @@
+=== 0.0.2 2014-1-18
+
+* bugfix "disconnect" event
+
 === 0.0.1 2014-1-15
 
 * first release
