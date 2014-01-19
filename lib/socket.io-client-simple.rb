@@ -10,11 +10,6 @@ require 'socket.io-client-simple/client'
 module SocketIO
   module Client
     module Simple
-
-      def self.connect(url, opts={})
-        Client.new(url, opts)
-      end
-
     end
   end
 end
