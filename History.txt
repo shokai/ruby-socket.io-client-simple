@@ -1,3 +1,7 @@
+=== 0.0.4 2014-1-20
+
+* add accessor Client#url
+
 === 0.0.3 2014-1-20
 
 * reconnect on socket.io disconnect
