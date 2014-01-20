@@ -13,7 +13,7 @@ module SocketIO
         alias_method :__emit, :emit
 
         attr_reader :websocket, :session_id, :heartbeat_timeout,
-                    :connection_timeout, :transports
+                    :connection_timeout, :transports, :url
         attr_accessor :last_heartbeat_at, :reconnecting
 
         def initialize(url, opts={})
