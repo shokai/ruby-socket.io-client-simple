@@ -4,7 +4,7 @@ A simple ruby client for node.js's socket.io. Supports only WebSocket.
 - https://github.com/shokai/ruby-socket.io-client-simple
 - https://rubygems.org/gems/socket.io-client-simple
 
-[![Travis-CI Build Status](https://travis-ci.org/shokai/ruby-socket.io-client-simple.png)](https://travis-ci.org/shokai/ruby-socket.io-client-simple)
+[![Travis-CI Build Status](https://travis-ci.org/shokai/ruby-socket.io-client-simple.png?branch=master)](https://travis-ci.org/shokai/ruby-socket.io-client-simple)
 
 ## Install
 
