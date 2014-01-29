@@ -15,11 +15,11 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     json (1.8.1)
-    minitest (5.2.1)
+    minitest (5.2.2)
     multi_xml (0.5.5)
     rake (10.1.1)
     websocket (1.1.2)
-    websocket-client-simple (0.0.6)
+    websocket-client-simple (0.0.8)
       event_emitter
       websocket
 
