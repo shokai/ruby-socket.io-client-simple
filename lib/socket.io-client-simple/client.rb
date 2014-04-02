@@ -39,7 +39,7 @@ module SocketIO
           res = nil
           begin
             res = HTTParty.get "#{@url}/socket.io/1/"
-          rescue => e
+          rescue Errno::ECONNREFUSED => e
             @reconnecting = false
             reconnect
             return
@@ -56,7 +56,7 @@ module SocketIO
           end
           begin
             @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/1/websocket/#{@session_id}"
-          rescue => e
+          rescue Errno::ECONNREFUSED => e
             @reconnecting = false
             reconnect
             return
