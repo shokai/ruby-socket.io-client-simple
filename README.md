@@ -32,6 +32,10 @@ socket.on :chat do |data|
   puts "> " + data['msg']
 end
 
+socket.on :error do |err|
+  p err
+end
+
 puts "please input and press Enter key"
 loop do
   msg = STDIN.gets.strip

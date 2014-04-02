@@ -63,6 +63,11 @@ module SocketIO
           end
 
           this = self
+
+          @websocket.on :error do |err|
+            this.__emit :error, err
+          end
+
           @websocket.on :message do |msg|
             code, body = msg.data.scan(/^(\d+):{2,3}(.*)$/)[0]
             code = code.to_i
