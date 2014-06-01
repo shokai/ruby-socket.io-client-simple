@@ -32,4 +32,14 @@ class TestSocketIOClientSimple < MiniTest::Test
     assert_equal post_data, result
   end
 
+  def test_connect_with_query_parameter
+    socket = SocketIO::Client::Simple.connect TestServer.url + "/?app=appid"
+    result = false
+    socket.on :connect do
+      result = true
+    end
+    sleep 0.5
+    assert result
+  end
+
 end
