@@ -20,6 +20,9 @@ require 'socket.io-client-simple'
 
 socket = SocketIO::Client::Simple.connect 'http://localhost:3000'
 
+## connect with parameter
+socket = SocketIO::Client::Simple.connect 'http://localhost:3000', :foo => "bar"
+
 socket.on :connect do
   puts "connect!!!"
 end
