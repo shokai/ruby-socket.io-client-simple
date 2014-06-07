@@ -34,7 +34,7 @@ class TestSocketIOClientSimple < MiniTest::Test
 
   def test_connect_with_query_parameter
     user = "hashimoto.shokai"
-    socket = SocketIO::Client::Simple.connect "#{TestServer.url}/?user=#{user}"
+    socket = SocketIO::Client::Simple.connect TestServer.url, :user => user
 
     result = nil
 

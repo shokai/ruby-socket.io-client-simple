@@ -38,7 +38,7 @@ module SocketIO
         def connect
           res = nil
           begin
-            res = HTTParty.get handshake_url
+            res = HTTParty.get "#{@url}/socket.io/1", :query => @opts
           rescue Errno::ECONNREFUSED => e
             @reconnecting = false
             reconnect
@@ -52,10 +52,10 @@ module SocketIO
           @connection_timeout = arr.shift.to_i
           @transports = arr.shift.split(',')
           unless @transports.include? 'websocket'
-            raise Error, "server #{handshake_url} does not supports websocket!!"
+            raise Error, "server #{@url} does not supports websocket!!"
           end
           begin
-            @websocket = WebSocket::Client::Simple.connect websocket_url
+            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/1/websocket/#{@session_id}"
           rescue Errno::ECONNREFUSED => e
             @reconnecting = false
             reconnect
@@ -115,25 +115,6 @@ module SocketIO
           @websocket.send "5:::#{emit_data}"
         end
 
-        private
-
-        def handshake_url
-          uri = URI.parse @url
-          if uri.query.nil?
-            return base_url uri
-          else
-            return "#{base_url uri}?#{uri.query}"
-          end
-        end
-
-        def websocket_url
-          uri = URI.parse(@url)
-          "#{base_url(uri)}/websocket/#{@session_id}"
-        end
-
-        def base_url(uri)
-          "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1"
-        end
       end
 
     end
