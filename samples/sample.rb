@@ -4,6 +4,8 @@ require 'socket.io-client-simple'
 
 socket = SocketIO::Client::Simple.connect 'http://localhost:3000'
 
+# socket.auto_reconnection = false
+
 #socket.websocket.on :message do |msg|  ## inspect websocket data
 #  p msg.data
 #end

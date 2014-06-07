@@ -6,11 +6,13 @@
   "license": "MIT",
   "homepage": "https://github.com/shokai/ruby-socket.io-client-simple",
   "dependencies": {
-    "socket.io": "~0.9.16"
+    "socket.io": "~1.0",
+    "socket.io-client": "~1.0",
+    "coffee-script": "*"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node samples/chat_server.js"
+    "start": "coffee samples/chat_server.coffee"
   },
   "repository": {
     "type": "git",

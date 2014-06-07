@@ -5,58 +5,45 @@ module SocketIO
       def self.connect(url, opts={})
         client = Client.new(url, opts)
         client.connect
-        client
+        return client
       end
 
       class Client
         include EventEmitter
         alias_method :__emit, :emit
 
-        attr_reader :websocket, :session_id, :heartbeat_timeout,
-                    :connection_timeout, :transports, :url
-        attr_accessor :last_heartbeat_at, :reconnecting
+        attr_accessor :auto_reconnection, :websocket, :url, :reconnecting, :state,
+                      :session_id, :ping_interval, :ping_timeout, :last_pong_at
 
         def initialize(url, opts={})
           @url = url
           @opts = opts
+          @opts[:transport] = :websocket
           @reconnecting = false
+          @state = :disconnect
+          @auto_reconnection = true
 
           Thread.new do
             loop do
-              sleep 5
-              next if !@last_heartbeat_at or !@heartbeat_timeout
-              if Time.now - @last_heartbeat_at > @heartbeat_timeout
-                @websocket.close
-                __emit :disconnect
-                reconnect
+              if @state == :connect
+                @websocket.send "2"  ## ping
+                @last_ping_at = Time.now
+                sleep @ping_interval/1000
+              else
+                sleep 1
               end
             end
           end
 
         end
 
-        def connect
-          res = nil
-          begin
-            res = HTTParty.get "#{@url}/socket.io/1", :query => @opts
-          rescue Errno::ECONNREFUSED => e
-            @reconnecting = false
-            reconnect
-            return
-          end
-          raise res.body unless res.code == 200
 
-          arr = res.body.split(':')
-          @session_id = arr.shift
-          @heartbeat_timeout = arr.shift.to_i
-          @connection_timeout = arr.shift.to_i
-          @transports = arr.shift.split(',')
-          unless @transports.include? 'websocket'
-            raise Error, "server #{@url} does not supports websocket!!"
-          end
+        def connect
+          query = @opts.map{|k,v| "#{k}=#{v}" }.join '&'
           begin
-            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/1/websocket/#{@session_id}"
+            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/?#{query}"
           rescue Errno::ECONNREFUSED => e
+            @state = :disconnect
             @reconnecting = false
             reconnect
             return
@@ -65,43 +52,50 @@ module SocketIO
           this = self
 
           @websocket.on :error do |err|
+            if err.kind_of? Errno::ECONNRESET and this.state == :connect
+              this.state = :disconnect
+              this.__emit :disconnect
+              this.reconnect
+              next
+            end
             this.__emit :error, err
           end
 
           @websocket.on :message do |msg|
-            code, body = msg.data.scan(/^(\d+):{2,3}(.*)$/)[0]
+            next unless msg.data =~ /^\d+/
+            code, body = msg.data.unpack('U*').pack('C*').force_encoding('utf-8').scan(/^(\d+)(.*)$/)[0]
             code = code.to_i
             case code
-            when 0
-              this.websocket.close if this.websocket.open?
-              this.__emit :disconnect
-              this.reconnect
-            when 1  ##  socket.io connect
-              this.last_heartbeat_at = Time.now
+            when 0  ##  socket.io connect
               this.reconnecting = false
+              body = JSON.parse body rescue next
+              this.session_id = body["sid"]
+              this.ping_interval = body["pingInterval"]
+              this.ping_timeout = body["pingTimeout"]
+              this.state = :connect
               this.__emit :connect
-            when 2
-              this.last_heartbeat_at = Time.now
-              send "2::"  # socket.io heartbeat
-            when 3
-            when 4
-            when 5
-              data = JSON.parse body
-              this.__emit data['name'], *data['args']
-            when 6
-            when 7
-              this.__emit :error
+            when 3  ## pong
+              this.last_pong_at = Time.now
+            when 41  ## disconnect from server
+              this.websocket.close if this.websocket.open?
+              this.state = :disconnect
+              this.__emit :disconnect
+              reconnect
+            when 42  ## data
+              data = JSON.parse body rescue next
+              event_name = data.shift
+              this.__emit event_name, *data
             end
           end
 
-          @websocket.send "1::#{@opts[:path]}"
-          return
+          return self
         end
 
         def reconnect
+          return unless @auto_reconnection
           return if @reconnecting
           @reconnecting = true
-          sleep rand(20)+20
+          sleep rand(10)+5
           connect
         end
 
@@ -111,8 +105,9 @@ module SocketIO
 
         def emit(event_name, *data)
           return unless open?
-          emit_data = {:name => event_name, :args => data}.to_json
-          @websocket.send "5:::#{emit_data}"
+          return unless @state == :connect
+          data.unshift event_name
+          @websocket.send "42#{data.to_json}".unpack('C*').pack('U*')
         end
 
       end

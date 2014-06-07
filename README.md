@@ -8,7 +8,15 @@ A simple ruby client for node.js's socket.io. Supports only WebSocket.
 
 ## Install
 
-    % gem install socket.io-client-simple
+gem intsall
+
+    % gem install socket.io-client-simple  # latest version, supports Socket.IO v1.0.x
+
+
+or use `Gemfile` with Bundler
+
+    gem 'socket.io-client-simple', '< 1.0'  # for Socket.IO v0.9.x
+    gem 'socket.io-client-simple'           # for Socket.IO v1.0.x
 
 
 ## Usage

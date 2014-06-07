@@ -2,9 +2,7 @@ require File.expand_path 'test_helper', File.dirname(__FILE__)
 
 class TestSocketIOClientSimple < MiniTest::Test
 
-  def setup
-    TestServer.start
-  end
+  TestServer.start
 
   def test_connect
     socket = SocketIO::Client::Simple.connect TestServer.url
