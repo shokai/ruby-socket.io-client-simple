@@ -33,13 +33,21 @@ class TestSocketIOClientSimple < MiniTest::Test
   end
 
   def test_connect_with_query_parameter
-    socket = SocketIO::Client::Simple.connect "#{TestServer.url}/?app=appid"
-    result = false
+    user = "hashimoto.shokai"
+    socket = SocketIO::Client::Simple.connect "#{TestServer.url}/?user=#{user}"
+
+    result = nil
+
+    socket.on :chat do |data|
+      result = data['user']
+    end
+
     socket.on :connect do
-      result = true
+      socket.emit :chat, {"msg" => "hello (query parameter test)", "at" => Time.now.to_s}
     end
     sleep 0.5
-    assert result
+
+    assert_equal result, user
   end
 
 end
