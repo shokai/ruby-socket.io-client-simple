@@ -118,19 +118,21 @@ module SocketIO
         private
 
         def handshake_url
-          uri = URI.parse(@url)
-          url = base_url(uri)
-          url << "?#{uri.query}" unless uri.query.nil?
-          url
+          uri = URI.parse @url
+          if uri.query.nil?
+            return base_url uri
+          else
+            return "#{base_url uri}?#{uri.query}"
+          end
         end
 
         def websocket_url
           uri = URI.parse(@url)
-          "#{base_url(uri)}websocket/#{@session_id}"
+          "#{base_url(uri)}/websocket/#{@session_id}"
         end
 
         def base_url(uri)
-          "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1/"
+          "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1"
         end
       end
 

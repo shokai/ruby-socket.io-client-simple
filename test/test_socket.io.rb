@@ -33,7 +33,7 @@ class TestSocketIOClientSimple < MiniTest::Test
   end
 
   def test_connect_with_query_parameter
-    socket = SocketIO::Client::Simple.connect TestServer.url + "/?app=appid"
+    socket = SocketIO::Client::Simple.connect "#{TestServer.url}/?app=appid"
     result = false
     socket.on :connect do
       result = true
