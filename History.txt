@@ -1,3 +1,8 @@
+=== 0.0.6 2014-06-08
+
+* use 2nd argment of method "SocketIO::Client::Simple.connect" as handshake query parameter  #5
+  * thank you for contributing @mallowlabs
+
 === 0.0.5 2014-04-03
 
 * emit "error" event
