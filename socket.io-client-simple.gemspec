@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = SocketIO::Client::Simple::VERSION
   spec.authors       = ["Sho Hashimoto"]
   spec.email         = ["hashimoto@shokai.org"]
-  spec.description   = "A simple ruby client for node.js's socket.io. Supports only WebSocket."
+  spec.description   = "A simple ruby client for Node.js's Socket.IO v1.0.x, Supports only WebSocket."
   spec.summary       = spec.description
   spec.homepage      = "https://github.com/shokai/ruby-socket.io-client-simple"
   spec.license       = "MIT"

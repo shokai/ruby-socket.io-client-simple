@@ -1,3 +1,8 @@
+=== 1.0.0 2014-07-03
+
+* support Socket.IO v1.0.x  #4
+  * add parameter Client#auto_reconnection to disable auto-reconneciton
+
 === 0.0.6 2014-06-08
 
 * use 2nd argment of method "SocketIO::Client::Simple.connect" as handshake query parameter  #5

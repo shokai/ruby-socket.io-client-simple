@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    socket.io-client-simple (0.0.6)
+    socket.io-client-simple (1.0.0)
       event_emitter
       httparty
       json

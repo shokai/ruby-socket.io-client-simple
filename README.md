@@ -1,5 +1,5 @@
 # SocketIO::Client::Simple
-A simple ruby client for node.js's socket.io. Supports only WebSocket.
+A simple ruby client for Node.js's Socket.IO v1.0.x, Supports only WebSocket.
 
 - https://github.com/shokai/ruby-socket.io-client-simple
 - https://rubygems.org/gems/socket.io-client-simple
@@ -55,12 +55,12 @@ loop do
 end
 ```
 
-sample.rb works with [samples/chat_server.js](https://github.com/shokai/ruby-socket.io-client-simple/blob/master/samples/chat_server.js).
+sample.rb works with [samples/chat_server.coffee](https://github.com/shokai/ruby-socket.io-client-simple/blob/master/samples/chat_server.coffee).
 
 ### start chat server
 
     % npm install
-    % node samples/chat_server.js
+    % coffee samples/chat_server.coffee
 
 => chat server start at localhost:3000
 
