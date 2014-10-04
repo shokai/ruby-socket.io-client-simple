@@ -13,7 +13,7 @@ module SocketIO
         alias_method :__emit, :emit
 
         attr_accessor :auto_reconnection, :websocket, :url, :reconnecting, :state,
-                      :session_id, :ping_interval, :ping_timeout, :last_pong_at
+                      :session_id, :ping_interval, :ping_timeout, :last_pong_at, :last_ping_at
 
         def initialize(url, opts={})
           @url = url
@@ -25,13 +25,21 @@ module SocketIO
 
           Thread.new do
             loop do
-              if @state == :connect
-                @websocket.send "2"  ## ping
-                @last_ping_at = Time.now
-                sleep @ping_interval/1000
-              else
-                sleep 1
+              if @websocket
+                if @state == :connect
+                  if Time.now.to_i - @last_ping_at > @ping_interval/1000
+                    @websocket.send "2"  ## ping
+                    @last_ping_at = Time.now.to_i
+                  end
+                end
+                if @websocket.open? and Time.now.to_i - @last_pong_at > @ping_timeout/1000
+                  @websocket.close
+                  @state = :disconnect
+                  __emit :disconnect
+                  reconnect
+                end
               end
+              sleep 1
             end
           end
 
@@ -39,7 +47,7 @@ module SocketIO
 
 
         def connect
-          query = @opts.map{|k,v| "#{k}=#{v}" }.join '&'
+          query = @opts.map{|k,v| URI.encode "#{k}=#{v}" }.join '&'
           begin
             @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/?#{query}"
           rescue Errno::ECONNREFUSED => e
@@ -48,6 +56,7 @@ module SocketIO
             reconnect
             return
           end
+          @reconnecting = false
 
           this = self
 
@@ -67,15 +76,16 @@ module SocketIO
             code = code.to_i
             case code
             when 0  ##  socket.io connect
-              this.reconnecting = false
               body = JSON.parse body rescue next
-              this.session_id = body["sid"]
-              this.ping_interval = body["pingInterval"]
-              this.ping_timeout = body["pingTimeout"]
+              this.session_id = body["sid"] || "no_sid"
+              this.ping_interval = body["pingInterval"] || 25000
+              this.ping_timeout  = body["pingTimeout"]  || 60000
+              this.last_ping_at = Time.now.to_i
+              this.last_pong_at = Time.now.to_i
               this.state = :connect
               this.__emit :connect
             when 3  ## pong
-              this.last_pong_at = Time.now
+              this.last_pong_at = Time.now.to_i
             when 41  ## disconnect from server
               this.websocket.close if this.websocket.open?
               this.state = :disconnect
@@ -95,7 +105,7 @@ module SocketIO
           return unless @auto_reconnection
           return if @reconnecting
           @reconnecting = true
-          sleep rand(10)+5
+          sleep rand(5) + 5
           connect
         end
 

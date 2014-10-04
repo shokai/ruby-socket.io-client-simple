@@ -1,3 +1,4 @@
+require 'uri'
 require 'json'
 require 'httparty'
 require 'websocket-client-simple'
