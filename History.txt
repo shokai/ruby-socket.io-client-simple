@@ -1,3 +1,7 @@
+=== 1.1.0 2014-10-04
+
+* support Socket.IO v1.1x
+
 === 1.0.0 2014-07-03
 
 * support Socket.IO v1.0.x  #4
