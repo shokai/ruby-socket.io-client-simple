@@ -63,7 +63,7 @@ module SocketIO
 
           @websocket.on :message do |msg|
             next unless msg.data =~ /^\d+/
-            code, body = msg.data.unpack('U*').pack('C*').force_encoding('utf-8').scan(/^(\d+)(.*)$/)[0]
+            code, body = msg.data.scan(/^(\d+)(.*)$/)[0]
             code = code.to_i
             case code
             when 0  ##  socket.io connect
@@ -107,7 +107,7 @@ module SocketIO
           return unless open?
           return unless @state == :connect
           data.unshift event_name
-          @websocket.send "42#{data.to_json}".unpack('C*').pack('U*')
+          @websocket.send "42#{data.to_json}"
         end
 
       end

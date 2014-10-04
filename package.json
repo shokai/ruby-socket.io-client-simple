@@ -6,8 +6,8 @@
   "license": "MIT",
   "homepage": "https://github.com/shokai/ruby-socket.io-client-simple",
   "dependencies": {
-    "socket.io": "~1.0",
-    "socket.io-client": "~1.0",
+    "socket.io": "^1.1",
+    "socket.io-client": "^1.1",
     "coffee-script": "*"
   },
   "devDependencies": {},

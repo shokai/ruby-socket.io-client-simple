@@ -21,7 +21,7 @@ class TestSocketIOClientSimple < MiniTest::Test
       result = data
     end
 
-    post_data = {"msg" => "hello", "at" => Time.now.to_s}
+    post_data = {"msg" => "hello", "at" => Time.now.to_s, "あいさつ" => "こんにちは"}
     socket.on :connect do
       socket.emit :chat, post_data
     end
