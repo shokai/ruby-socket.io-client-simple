@@ -1,3 +1,10 @@
+=== 1.1.2 2014-10-20
+
+* bugfix reconnection on websocket proxy  #9
+* fix samples
+* bundle update, use websocket-client-simple v0.2.1  #9
+* bugfix encoding handshake query parameter  #5
+
 === 1.1.0 2014-10-04
 
 * support Socket.IO v1.1x

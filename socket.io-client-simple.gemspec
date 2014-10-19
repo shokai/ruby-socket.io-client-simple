@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest"
 
   spec.add_dependency "json"
-  spec.add_dependency "websocket-client-simple", '>= 0.0.9'
+  spec.add_dependency "websocket-client-simple", '>= 0.2.1'
   spec.add_dependency "httparty"
   spec.add_dependency "event_emitter"
 end

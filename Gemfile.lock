@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    socket.io-client-simple (1.1.0)
+    socket.io-client-simple (1.1.2)
       event_emitter
       httparty
       json
-      websocket-client-simple (>= 0.0.9)
+      websocket-client-simple (>= 0.2.1)
 
 GEM
   remote: https://rubygems.org/
