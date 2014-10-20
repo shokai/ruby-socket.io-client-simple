@@ -2,7 +2,7 @@ $:.unshift File.expand_path '../lib', File.dirname(__FILE__)
 require 'rubygems'
 require 'socket.io-client-simple'
 
-url    = ARGV.shift or 'http://localhost:3000'
+url    = ARGV.shift || 'http://localhost:3000'
 socket = SocketIO::Client::Simple.connect url
 
 # socket.auto_reconnection = false
