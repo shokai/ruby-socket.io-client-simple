@@ -1,3 +1,7 @@
+=== 1.1.3 2014-02-03
+
+* update for socket.io 1.3.x
+
 === 1.1.2 2014-10-20
 
 * bugfix reconnection on websocket proxy  #9
