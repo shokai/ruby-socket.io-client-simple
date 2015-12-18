@@ -1,4 +1,4 @@
-require File.expand_path 'test_helper', File.dirname(__FILE__)
+require File.expand_path 'test/test_helper'#, File.dirname(__FILE__)
 
 class TestSocketIOClientSimple < MiniTest::Test
 
@@ -48,4 +48,11 @@ class TestSocketIOClientSimple < MiniTest::Test
     assert_equal result, user
   end
 
+  def test_disconnect
+    socket = SocketIO::Client::Simple.connect TestServer.url
+    result = nil
+    socket.disconnect
+    sleep 0.5
+    assert_equal socket.open?, false
+  end
 end
