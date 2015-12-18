@@ -3,6 +3,8 @@ node_js:
   - '0.10'
 rvm:
   - '2.1.2'
+before_install:
+  - gem update bundler
 before_script:
   - npm install
 notifications:
