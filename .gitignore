@@ -19,5 +19,4 @@ test/version_tmp
 tmp
 node_modules
 *.log
-
 vendor
