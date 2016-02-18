@@ -50,8 +50,10 @@ class TestSocketIOClientSimple < MiniTest::Test
 
   def test_disconnect
     socket = SocketIO::Client::Simple.connect TestServer.url
-    result = nil
-    socket.disconnect
+
+    socket.on :connect do
+      socket.disconnect
+    end
     sleep 0.5
     assert_equal socket.open?, false
   end
