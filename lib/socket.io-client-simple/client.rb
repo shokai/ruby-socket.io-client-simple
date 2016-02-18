@@ -120,6 +120,12 @@ module SocketIO
           @websocket.send "42#{data.to_json}"
         end
 
+        def disconnect
+          @auto_reconnection = false
+          @websocket.close
+          @state = :disconnect
+        end
+
       end
 
     end
