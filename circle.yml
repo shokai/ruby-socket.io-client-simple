@@ -1,0 +1,12 @@
+machine:
+  node:
+    version: 5.4
+  ruby:
+    version: "2.2.2"
+dependencies:
+  override:
+    - bundle install
+    - npm install
+test:
+  override:
+    - bundle exec rake test
