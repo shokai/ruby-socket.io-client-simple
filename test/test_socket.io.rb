@@ -4,6 +4,8 @@ class TestSocketIOClientSimple < MiniTest::Test
 
   TestServer.start
 
+  sleep 1
+
   def test_connect
     socket = SocketIO::Client::Simple.connect TestServer.url
     result = false

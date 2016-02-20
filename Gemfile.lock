@@ -5,7 +5,7 @@ PATH
       event_emitter
       httparty
       json
-      websocket-client-simple (>= 0.2.5)
+      websocket-client-simple (~> 0.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -19,7 +19,7 @@ GEM
     multi_xml (0.5.5)
     rake (10.5.0)
     websocket (1.2.2)
-    websocket-client-simple (0.2.5)
+    websocket-client-simple (0.3.0)
       event_emitter
       websocket
 
