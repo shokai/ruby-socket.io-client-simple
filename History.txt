@@ -1,3 +1,8 @@
+=== 1.2.1 2016-02-21
+
+* update websocket-client-simple v0.3.x
+* update socket.io 1.4.x
+
 === 1.2.0 2016-02-19
 
 * add "disconnect" method  #16
