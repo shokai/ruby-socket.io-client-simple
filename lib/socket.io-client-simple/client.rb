@@ -2,8 +2,8 @@ module SocketIO
   module Client
     module Simple
 
-      def self.connect(url, opts={})
-        client = Client.new(url, opts)
+      def self.connect(url, opts={}, headers={})
+        client = Client.new(url, opts, headers)
         client.connect
         return client
       end
@@ -15,9 +15,10 @@ module SocketIO
         attr_accessor :auto_reconnection, :websocket, :url, :reconnecting, :state,
                       :session_id, :ping_interval, :ping_timeout, :last_pong_at, :last_ping_at
 
-        def initialize(url, opts={})
+        def initialize(url, opts={}, headers={})
           @url = url
           @opts = opts
+          @headers = headers
           @opts[:transport] = :websocket
           @reconnecting = false
           @state = :disconnect
@@ -49,7 +50,7 @@ module SocketIO
         def connect
           query = @opts.map{|k,v| URI.encode "#{k}=#{v}" }.join '&'
           begin
-            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/?#{query}"
+            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/?#{query}", options = @headers
           rescue Errno::ECONNREFUSED => e
             @state = :disconnect
             @reconnecting = false
