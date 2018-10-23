@@ -19,6 +19,7 @@ module SocketIO
           @url = url
           @opts = opts
           @opts[:transport] = :websocket
+          @path = @opts.delete(:path) || "/socket.io"
           @reconnecting = false
           @state = :disconnect
           @auto_reconnection = true
@@ -49,7 +50,7 @@ module SocketIO
         def connect
           query = @opts.map{|k,v| URI.encode "#{k}=#{v}" }.join '&'
           begin
-            @websocket = WebSocket::Client::Simple.connect "#{@url}/socket.io/?#{query}"
+            @websocket = WebSocket::Client::Simple.connect "#{@url}#{@path}/?#{query}"
           rescue Errno::ECONNREFUSED => e
             @state = :disconnect
             @reconnecting = false
@@ -116,8 +117,9 @@ module SocketIO
         def emit(event_name, *data)
           return unless open?
           return unless @state == :connect
-          data.unshift event_name
-          @websocket.send "42#{data.to_json}"
+          data.each do |packet|
+            is_binary?(packet) ? send_binary(event_name, packet) : send_data(event_name, packet)
+          end
         end
 
         def disconnect
@@ -126,8 +128,30 @@ module SocketIO
           @state = :disconnect
         end
 
-      end
+        private
 
+        def is_binary?(packet)
+          packet.is_a?(SocketIO::Client::Simple::ByteBuffer)
+        end
+
+        def send_data(event_name, *data)
+          data.unshift event_name
+          @websocket.send "42#{data.to_json}"
+        end
+
+        def send_binary(event_name, packet)
+          header = binary_header.unshift event_name
+          @websocket.send "451-#{header.to_json}"
+          @websocket.send packet.buffer, type: :binary
+        end
+
+        def binary_header
+          [{
+               _placeholder: true,
+               num: 0
+           }]
+        end
+      end
     end
   end
 end
