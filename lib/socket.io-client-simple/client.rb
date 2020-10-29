@@ -81,7 +81,7 @@ module SocketIO
               body = JSON.parse body rescue next
               this.session_id = body["sid"] || "no_sid"
               this.ping_interval = body["pingInterval"] || 25000
-              this.ping_timeout  = body["pingTimeout"]  || 60000
+              this.ping_timeout  = body["pingTimeout"]  || 5000
               this.ping_state = 'ready_to_ping'
               this.last_ping_at = Time.now.to_i
               this.last_pong_at = Time.now.to_i
