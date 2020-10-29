@@ -12,8 +12,9 @@ module SocketIO
         include EventEmitter
         alias_method :__emit, :emit
 
-        attr_accessor :auto_reconnection, :websocket, :url, :reconnecting, :state,
-                      :session_id, :ping_interval, :ping_timeout, :last_pong_at, :last_ping_at
+        attr_accessor :auto_reconnection, :websocket, :url, :reconnecting,
+                      :state, :session_id, :ping_interval, :ping_timeout,
+                      :ping_state, :last_pong_at, :last_ping_at
 
         def initialize(url, opts={})
           @url = url
@@ -27,12 +28,13 @@ module SocketIO
             loop do
               if @websocket
                 if @state == :connect
-                  if Time.now.to_i - @last_ping_at > @ping_interval/1000
+                  if @ping_state == 'ready_to_ping' and Time.now.to_i - @last_pong_at > @ping_interval/1000
                     @websocket.send "2"  ## ping
                     @last_ping_at = Time.now.to_i
+                    @ping_state = 'waiting_pong'
                   end
                 end
-                if @websocket.open? and Time.now.to_i - @last_pong_at > @ping_timeout/1000
+                if @websocket.open? and @ping_state == 'waiting_pong' and Time.now.to_i - @last_ping_at > @ping_timeout/1000
                   @websocket.close
                   @state = :disconnect
                   __emit :disconnect
@@ -80,12 +82,14 @@ module SocketIO
               this.session_id = body["sid"] || "no_sid"
               this.ping_interval = body["pingInterval"] || 25000
               this.ping_timeout  = body["pingTimeout"]  || 60000
+              this.ping_state = 'ready_to_ping'
               this.last_ping_at = Time.now.to_i
               this.last_pong_at = Time.now.to_i
               this.state = :connect
               this.__emit :connect
             when 3  ## pong
               this.last_pong_at = Time.now.to_i
+              this.ping_state = 'ready_to_ping'
             when 41  ## disconnect from server
               this.websocket.close if this.websocket.open?
               this.state = :disconnect
