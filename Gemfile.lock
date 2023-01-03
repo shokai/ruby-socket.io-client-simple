@@ -11,12 +11,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     event_emitter (0.2.5)
-    httparty (0.13.7)
-      json (~> 1.8)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    json (1.8.3)
+    json (2.6.3)
+    mini_mime (1.1.2)
     minitest (5.8.4)
-    multi_xml (0.5.5)
+    multi_xml (0.6.0)
     rake (10.5.0)
     websocket (1.2.2)
     websocket-client-simple (0.3.0)
